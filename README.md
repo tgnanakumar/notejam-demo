@@ -3,15 +3,15 @@ Notejam application demo using AWS CloudFormation template which automatically p
 
 ## Pre-requisites
 ### Java
-yum install -y java-1.8.0-openjdk
+\# yum install -y java-1.8.0-openjdk
 
-yum install -y java-1.8.0-openjdk-devel
+\# yum install -y java-1.8.0-openjdk-devel
 
 ### Git
-yum install -y git
+\# yum install -y git
 
 ### Apache Maven
-wget http://apache.mirrors.spacedump.net/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+\# wget http://apache.mirrors.spacedump.net/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
 
 ## Run Sprint Boot Application
-mvn spring-boot:run
+\# mvn spring-boot:run
