@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Notejam application demo.
+
+Resources:
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: Notejam webserver
+      GroupDescription: Notejam application demo security group.
+      Tags:
+        - Key: Demo
+          Value: Notejam
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 8080
+        ToPort: 8080
+        CidrIp: 0.0.0.0/0
+
+  NotejamDemo:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t3.micro
+      ImageId: ami-0e2cfbf95ba9e1a36 # Amazon Linux 2 AMI 2.0.20200904.0 x86_64 HVM from eu-north-1
+      AvailabilityZone: eu-north-1c
+      Tags:
+        - Key: Name
+          Value: Notejam
+        - Key: Demo
+          Value: Notejam
+      SecurityGroups:
+        - Ref: InstanceSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+
+          # Install Java and Git
+          yum install -y java-1.8.0-openjdk
+          yum install -y java-1.8.0-openjdk-devel
+          yum install -y git
+
+          # Download and extract Apache Maven and then set the home and path
+          cd /home/ec2-user
+          wget http://apache.mirrors.spacedump.net/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+          tar -zxf apache-maven-3.6.3-bin.tar.gz
+          export M2_HOME=/home/ec2-user/apache-maven-3.6.3
+          export M2=$M2_HOME/bin
+          export PATH=$PATH:$M2
+
+          # Clone Notejam repo
+          mkdir /home/ec2-user/notejam
+          cd /home/ec2-user/notejam
+          git clone https://github.com/komarserjio/notejam /home/ec2-user/notejam
+
+          # Start Notejam demo application
+          cd /home/ec2-user/notejam/spring
+          mvn spring-boot:run
