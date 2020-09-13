@@ -4,6 +4,7 @@ Notejam application demo using AWS CloudFormation template which automatically p
 # Pre-requisites
 ## Java
 yum install -y java-1.8.0-openjdk
+
 yum install -y java-1.8.0-openjdk-devel
 
 ## Git
